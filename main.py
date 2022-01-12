@@ -80,7 +80,6 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('main.ui', self)
         self.resize(1500, 1000)
-        self.tableWidget.itemClicked.connect(self.item_clicked)
         self.pushButton.clicked.connect(self.show_dialog)
         self.pushButton_2.clicked.connect(self.refresh)
         self.refresh()
