@@ -27,12 +27,10 @@ class MyWidget(QMainWindow):
         self.repaint()
 
     def draw_yellow_circle(self, qp):
-        rand_color = randint(1, 255), randint(1, 255), randint(1, 255)
         rand_size = randint(50, 100)
-        qp.setBrush(QColor(*rand_color))
-        qp.setPen(QtGui.QPen(QColor(*rand_color), 1, QtCore.Qt.SolidLine))
+        qp.setBrush(QColor(QtCore.Qt.yellow))
+        qp.setPen(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.SolidLine))
         qp.drawEllipse(randint(1, 800), randint(1, 600), rand_size, rand_size)
-        self.do_paint = False
 
 
 if __name__ == '__main__':
