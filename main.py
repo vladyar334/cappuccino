@@ -1,38 +1,40 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
+from random import randint
+
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import uic  # Импортируем uic
+from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import *
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(350, 270, 75, 23))
-        self.pushButton.setObjectName("pushButton")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+class MyWidget(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('untitled.ui', self)  # Загружаем дизайн
+        self.pushButton.clicked.connect(self.paint)
+        self.do_paint = False
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def paintEvent(self, event):
+        if self.do_paint:
+            qp = QPainter()
+            qp.begin(self)
+            self.draw_yellow_circle(qp)
+            qp.end()
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Клик!"))
+    def paint(self):
+        self.do_paint = True
+        self.repaint()
+
+    def draw_yellow_circle(self, qp):
+        rand_size = randint(50, 100)
+        qp.setBrush(QColor(QtCore.Qt.yellow))
+        qp.setPen(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.SolidLine))
+        qp.drawEllipse(randint(1, 800), randint(1, 600), rand_size, rand_size)
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyWidget()
+    ex.show()
     sys.exit(app.exec_())
